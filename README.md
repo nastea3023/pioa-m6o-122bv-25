@@ -1,68 +1,21 @@
-# База занятий по репетиторству
+﻿# Tutor lessons database
 
-## Описание
+Console application for managing tutoring lessons.
 
-Проект реализует консольную базу данных для учета занятий по репетиторству.
-Данные хранятся в оперативной памяти во время запуска программы.
+## Run
 
-Одна запись содержит:
-
-- `id` занятия;
-- имя ученика;
-- предмет;
-- дату занятия;
-- стоимость.
-
-## Возможности
-
-- добавление занятия;
-- просмотр всех занятий;
-- поиск занятий по одному или нескольким полям;
-- обновление занятия по `id`;
-- удаление занятия по `id`;
-- сортировка записей по выбранному полю в прямом или обратном порядке;
-- обработка ошибок при неправильном вводе.
-
-## Структура проекта
-
-```text
-.
-├── README.md
-├── src/
-│   └── db/
-│       ├── __init__.py
-│       ├── __main__.py
-│       ├── tui.py
-│       └── backend/
-│           ├── __init__.py
-│           └── memory.py
-└── tests/
-    ├── test_memory.py
-    └── test_tui.py
-```
-
-- `src/db/__main__.py` - файл запуска приложения.
-- `src/db/tui.py` - класс консольного интерфейса.
-- `src/db/backend/memory.py` - классы записи занятия и базы данных.
-- `tests/` - автоматизированные тесты.
-
-## Запуск приложения
-
-Из корня репозитория:
-
-```powershell
 python -m src.db
-```
 
-## Запуск тестов
+## Run tests
 
-```powershell
 python -m unittest discover -s tests
-```
 
-Если установлен пакет `coverage`, можно проверить покрытие:
+## Lab 4
 
-```powershell
-python -m coverage run -m unittest discover -s tests
-python -m coverage report
-```
+The work was prepared on top of task3.
+
+Fixed review comments:
+- updated the message for invalid numeric input in TUI;
+- added validation of records in LessonDatabase initialization;
+- removed old compatibility code from lab 2;
+- checked automated tests.
