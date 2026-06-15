@@ -28,7 +28,10 @@ class LessonDatabase:
     }
 
     def __init__(self, records: Iterable[LessonRecord] | None = None) -> None:
-        self._records = list(records or [])
+        self._records: list[LessonRecord] = []
+        if records is not None:
+            for record in records:
+                self.add(record)
 
     def create_record(
         self,
@@ -186,64 +189,3 @@ class LessonDatabase:
 
 
 default_database = LessonDatabase()
-
-
-def create_record(
-    lesson_id: int,
-    student_name: str,
-    subject: str,
-    lesson_date: str,
-    price: int,
-) -> LessonRecord:
-    """Add a lesson to the default database."""
-    return default_database.create_record(
-        lesson_id,
-        student_name,
-        subject,
-        lesson_date,
-        price,
-    )
-
-
-def select_record(
-    lesson_id: int | None = None,
-    student_name: str | None = None,
-    subject: str | None = None,
-    lesson_date: str | None = None,
-    price: int | None = None,
-) -> list[LessonRecord]:
-    """Return lessons from the default database matching the given filters."""
-    return default_database.select_record(
-        lesson_id=lesson_id,
-        student_name=student_name,
-        subject=subject,
-        lesson_date=lesson_date,
-        price=price,
-    )
-
-
-def update_record(
-    lesson_id: int,
-    student_name: str | None = None,
-    subject: str | None = None,
-    lesson_date: str | None = None,
-    price: int | None = None,
-) -> LessonRecord:
-    """Update a lesson in the default database."""
-    return default_database.update_record(
-        lesson_id,
-        student_name,
-        subject,
-        lesson_date,
-        price,
-    )
-
-
-def delete_record(lesson_id: int) -> LessonRecord:
-    """Delete a lesson from the default database."""
-    return default_database.delete_record(lesson_id)
-
-
-def sort_records(field_name: str, descending: bool = False) -> list[LessonRecord]:
-    """Return default database records sorted by the selected field."""
-    return default_database.sort_records(field_name, descending)
