@@ -96,6 +96,48 @@ class LessonDatabaseTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.database.sort_records("unknown")
 
+    def test_init_accepts_valid_initial_records(self) -> None:
+        initial = [
+            LessonRecord(1, " Анна ", " математика ", "25.04.2026", 1200),
+            LessonRecord(2, "Иван", "физика", "26.04.2026", 1500),
+        ]
+
+        database = LessonDatabase(initial)
+
+        self.assertEqual(
+            database.select_record(),
+            [
+                LessonRecord(1, "Анна", "математика", "25.04.2026", 1200),
+                LessonRecord(2, "Иван", "физика", "26.04.2026", 1500),
+            ],
+        )
+
+    def test_init_validates_initial_records(self) -> None:
+        invalid_cases = [
+            [LessonRecord(0, "Анна", "математика", "25.04.2026", 1200)],
+            [LessonRecord(1, "", "математика", "25.04.2026", 1200)],
+            [LessonRecord(1, "Анна", "математика", "25.04.2026", -1)],
+        ]
+
+        for case in invalid_cases:
+            with self.subTest(case=case):
+                with self.assertRaises(ValueError):
+                    LessonDatabase(case)
+
+    def test_init_rejects_duplicate_id_in_initial_records(self) -> None:
+        duplicated = [
+            LessonRecord(1, "Анна", "математика", "25.04.2026", 1200),
+            LessonRecord(1, "Иван", "физика", "26.04.2026", 1500),
+        ]
+
+        with self.assertRaises(ValueError):
+            LessonDatabase(duplicated)
+
+    def test_init_with_no_records_creates_empty_database(self) -> None:
+        database = LessonDatabase()
+
+        self.assertEqual(database.select_record(), [])
+
 
 if __name__ == "__main__":
     unittest.main()

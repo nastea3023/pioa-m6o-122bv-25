@@ -77,7 +77,7 @@ class LessonTUITest(unittest.TestCase):
         tui = self._make_tui(["text", "7"])
 
         self.assertEqual(tui._read_int("id: "), 7)
-        self.assertIn("Ошибка: введите целое число.", self.output)
+        self.assertIn("Ошибка: «text» не является целым числом. Попробуйте ещё раз.", self.output)
 
     def test_sort_lesson_prints_error_for_unknown_field(self) -> None:
         tui = self._make_tui(["6", "unknown", "asc", "0"])

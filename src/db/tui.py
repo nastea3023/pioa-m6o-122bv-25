@@ -58,7 +58,9 @@ class LessonTUI:
             try:
                 return int(raw)
             except ValueError:
-                self.output("Ошибка: введите целое число.")
+                self.output(
+                    f"Ошибка: «{raw}» не является целым числом. Попробуйте ещё раз."
+                )
 
     def _read_optional_int(self, prompt: str) -> int | None:
         raw = self.input(prompt).strip()

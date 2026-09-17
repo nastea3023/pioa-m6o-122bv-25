@@ -31,7 +31,7 @@ class LessonDatabase:
         self._records: list[LessonRecord] = []
         if records is not None:
             for record in records:
-                self.add(record)
+                self._add_validated(record)
 
     def create_record(
         self,
@@ -42,21 +42,9 @@ class LessonDatabase:
         price: int,
     ) -> LessonRecord:
         """Add a lesson to the database."""
-        self._validate_id(lesson_id)
-        self._validate_price(price)
-
-        if any(record.lesson_id == lesson_id for record in self._records):
-            raise ValueError(f"Занятие с id={lesson_id} уже существует.")
-
-        record = LessonRecord(
-            lesson_id=lesson_id,
-            student_name=self._check_text(student_name, "имя ученика"),
-            subject=self._check_text(subject, "предмет"),
-            lesson_date=self._check_text(lesson_date, "дата занятия"),
-            price=price,
+        return self._add_validated(
+            LessonRecord(lesson_id, student_name, subject, lesson_date, price)
         )
-        self._records.append(record)
-        return record
 
     def select_record(
         self,
@@ -146,6 +134,30 @@ class LessonDatabase:
             key=lambda record: getattr(record, attribute),
             reverse=descending,
         )
+
+    def _add_validated(self, record: LessonRecord) -> LessonRecord:
+        """Validate a record and append it to the storage.
+
+        Used both by ``create_record`` and by ``__init__`` so that lessons
+        passed in at construction time go through exactly the same checks
+        (id, price, non-empty fields, duplicate id) as lessons added later
+        through the public API.
+        """
+        self._validate_id(record.lesson_id)
+        self._validate_price(record.price)
+
+        if any(existing.lesson_id == record.lesson_id for existing in self._records):
+            raise ValueError(f"Занятие с id={record.lesson_id} уже существует.")
+
+        validated_record = LessonRecord(
+            lesson_id=record.lesson_id,
+            student_name=self._check_text(record.student_name, "имя ученика"),
+            subject=self._check_text(record.subject, "предмет"),
+            lesson_date=self._check_text(record.lesson_date, "дата занятия"),
+            price=record.price,
+        )
+        self._records.append(validated_record)
+        return validated_record
 
     def _find_index(self, lesson_id: int) -> int:
         for index, record in enumerate(self._records):
