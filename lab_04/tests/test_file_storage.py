@@ -5,17 +5,19 @@ import os
 import tempfile
 import unittest
 
-from lab_04.src.db.backend.file_storage import StudentTableFileStorage
 from lab_04.src.db.backend.errors import (
     DuplicateIDError,
     InvalidAgeError,
 )
+from lab_04.src.db.backend.file_storage import StudentTableFileStorage
 
 
 class TestFileStorage(unittest.TestCase):
 
     def setUp(self) -> None:
-        self._temp_file = tempfile.NamedTemporaryFile(
+
+        # закрывается в tearDown
+        self._temp_file = tempfile.NamedTemporaryFile(  # noqa: SIM115
             mode="w", suffix=".json", delete=False, encoding="utf-8"
         )
         self._temp_file.close()

@@ -4,9 +4,9 @@
 
 import json
 import os
-from typing import Any
+from typing import Any, ClassVar
 
-from .errors import DuplicateIDError, InvalidAgeError, FileStorageError
+from .errors import DuplicateIDError, FileStorageError, InvalidAgeError
 
 type StudentRecord = tuple[int, str, str, int, str]
 
@@ -30,7 +30,7 @@ class StudentTableFileStorage:
     }
     """
 
-    DEFAULT_STRUCTURE: dict[str, str] = {
+    DEFAULT_STRUCTURE: ClassVar[dict[str, str]] = {
         "student_id": "int",
         "first_name": "str",
         "second_name": "str",
