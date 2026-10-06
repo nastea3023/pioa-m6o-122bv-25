@@ -66,3 +66,43 @@ python -m unittest discover -s tests
 python -m coverage run -m unittest discover -s tests
 python -m coverage report
 ```
+# База занятий по репетиторству
+
+Учебный проект: база данных для учёта занятий по репетиторству
+с двумя реализациями хранения — in-memory и файловой (JSON).
+
+## Структура проекта
+.
+├── README.md
+├── src/
+│ └── db/
+│ ├── init.py
+│ ├── main.py # Точка входа
+│ ├── tui.py # Текстовый интерфейс
+│ └── backend/
+│ ├── init.py
+│ ├── memory.py # In-memory СУБД
+│ └── file_storage.py # Файловая СУБД (JSON)
+└── tests/
+├── init.py
+├── test_memory.py # Тесты in-memory
+└── test_file_storage.py # Тесты файловой
+
+## Функциональность
+
+Обе реализации имеют одинаковый интерфейс:
+
+- `create_record(lesson_id, student_name, subject, lesson_date, price)`
+  — добавить занятие.
+- `select_record(...)` — выбрать занятия по фильтрам
+  (id, имя, предмет, дата, цена).
+- `update_record(lesson_id, ...)` — обновить занятие.
+- `delete_record(lesson_id)` — удалить занятие.
+- `sort_records(field_name, descending=False)` — сортировка по полю.
+
+## Запуск
+
+### In-memory (по умолчанию)
+
+```bash
+python -m src.db

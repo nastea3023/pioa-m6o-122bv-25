@@ -2,3 +2,16 @@ __pycache__/
 *.py[cod]
 .coverage
 htmlcov/
+
+# Ruff
+.ruff_cache/
+
+# Pytest
+.pytest_cache/
+
+# Данные приложения
+lessons.json
+
+# Виртуальные окружения
+venv/
+.venv/

@@ -32,9 +32,8 @@ class LessonDatabaseTest(unittest.TestCase):
         ]
 
         for case in invalid_cases:
-            with self.subTest(case=case):
-                with self.assertRaises(ValueError):
-                    self.database.create_record(*case)
+            with self.subTest(case=case), self.assertRaises(ValueError):
+                self.database.create_record(*case)
 
     def test_create_record_rejects_duplicate_id(self) -> None:
         self.database.create_record(1, "Анна", "математика", "25.04.2026", 1200)

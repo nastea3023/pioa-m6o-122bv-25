@@ -88,7 +88,7 @@ class LessonTUI:
         self.output("\nДобавление занятия")
 
         lesson_id = self._read_int("id: ")
-        student_name = self.input("Имя ученика: ").strip()
+        student_name = self.input("имя ученика: ").strip()
         subject = self.input("Предмет: ").strip()
         lesson_date = self.input("Дата занятия, например 25.04.2026: ").strip()
         price = self._read_int("Стоимость: ")
@@ -116,7 +116,7 @@ class LessonTUI:
         self.output("\nПоиск занятия. Enter означает пропустить поле.")
 
         lesson_id = self._read_optional_int("id: ")
-        student_name = self.input("Имя ученика: ").strip() or None
+        student_name = self.input("имя ученика: ").strip() or None
         subject = self.input("Предмет: ").strip() or None
         lesson_date = self.input("Дата занятия: ").strip() or None
         price = self._read_optional_int("Стоимость: ")
@@ -187,6 +187,19 @@ class LessonTUI:
         self._print_records(records)
 
 
-def run() -> None:
-    """Run the console interface with the default database."""
-    LessonTUI().run()
+def run(use_file: bool = False, file_path: str = "lessons.json") -> None:
+    """Run the console interface.
+
+    Args:
+        use_file: если True — использовать файловую базу данных (JSON),
+            иначе — in-memory.
+        file_path: путь к JSON-файлу (используется только если use_file=True).
+    """
+    if use_file:
+        from .backend.file_storage import FileLessonDatabase
+
+        database = FileLessonDatabase(file_path)
+    else:
+        database = default_database
+
+    LessonTUI(database=database).run()
